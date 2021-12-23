@@ -36,7 +36,7 @@ public class AddressBook implements AddressBookIF {
 
 			System.out.println("\nChoose the operation you want to perform");
 			System.out.println(
-					"1.Add Contact to Address Book\n2.Edit Existing contact\n3.Display contact book\n4.Delete Contact\n5.Display Sorted Address Book\n6.Exit Address book System");
+					"1.Add Contact to Address Book\n2.Edit Existing contact\n3.Display contact book\n4.Delete Contact\n5.Display Sorted Address Book \n6.Exit Address book System");
 
 			switch (scannerObject.nextInt()) {
 			case 1:
@@ -51,10 +51,13 @@ public class AddressBook implements AddressBookIF {
 			case 4:
 				deletePerson();
 				break;
-			case 5 :
-				sortAddressBook();
+			case 5:
+				System.out.println("What Criteria Do You Want Address Book To Be Sorted In ?");
+				System.out.println("1.FirstName\n2.City\n3.State\n4.Zip Code");
+				int sortingChoice = scannerObject.nextInt();
+				sortAddressBook(sortingChoice);
 				break;
-			case 6:
+			case 7:
 				moreChanges = false;
 				System.out.println("Exiting Address Book: "+this.getAddressBookName()+" !");
 
@@ -201,20 +204,47 @@ public class AddressBook implements AddressBookIF {
 		
 	}
 	
-public void sortAddressBook() {
-		
-		List<ContactPerson> sortedContactList = contactList.values().stream()
+public void printSortedList(List<ContactPerson> sortedContactList) {
+	System.out.println("------ Sorted Address Book "+this.getAddressBookName()+" ------");
+	Iterator iterator = sortedContactList.iterator();
+	while (iterator.hasNext()) {
+		System.out.println(iterator.next());
+		System.out.println();
+	}
+	System.out.println("-----------------------------------------");
+}
+
+public void sortAddressBook(int sortingChoice) {
+	List<ContactPerson> sortedContactList;
+	
+	switch(sortingChoice) {
+	
+		case 1: sortedContactList = contactList.values().stream()
 				.sorted((firstperson, secondperson) -> firstperson.getFirstName().compareTo(secondperson.getFirstName()))
 				.collect(Collectors.toList());
-		
-		System.out.println("------ Sorted Address Book "+this.getAddressBookName()+" ------");
-		Iterator iterator = sortedContactList.iterator();
-		while (iterator.hasNext()) {
-			System.out.println(iterator.next());
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------");
+				printSortedList(sortedContactList);
+				break;
+			
+		case 2: sortedContactList = contactList.values().stream()
+				.sorted((firstperson, secondperson) -> firstperson.getCity().compareTo(secondperson.getCity()))
+				.collect(Collectors.toList());
+				printSortedList(sortedContactList);
+				break;
+			
+		case 3: sortedContactList = contactList.values().stream()
+				.sorted((firstperson, secondperson) -> firstperson.getState().compareTo(secondperson.getState()))
+				.collect(Collectors.toList());
+				printSortedList(sortedContactList);
+				break;
+			
+		case 4: sortedContactList = contactList.values().stream()
+				.sorted((firstperson, secondperson) -> Long.valueOf(firstperson.getZip()).compareTo(Long.valueOf(secondperson.getZip())))
+				.collect(Collectors.toList());
+				printSortedList(sortedContactList);
+				break;
 	}
+			
+}
 
 	@Override
 	public void displayContents() {
