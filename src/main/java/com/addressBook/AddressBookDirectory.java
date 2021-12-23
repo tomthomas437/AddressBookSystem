@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 	public class AddressBookDirectory {
 		
@@ -17,7 +16,8 @@ import java.util.stream.Stream;
 			do {
 
 				System.out.println("\nChoose the operation on the Directory you want to perform");
-				System.out.println("1.Add an Address Book\n2.Edit Existing Address Book\n3.Search Person By City\n4.Search Person By State\n5.Display Address book Directory\n6.Exit Address book System");
+				System.out.println(
+						"1.Add an Address Book\n2.Edit Existing Address Book\n3.Search Person By City\n4.Search Person By State\n5.View By City\n6.View By State\n7.Display Address book Directory\n8.Exit Address book System");
 
 				switch (scannerObject.nextInt()) {
 				case 1:
@@ -33,9 +33,15 @@ import java.util.stream.Stream;
 					searchByState();
 					break;
 				case 5:
-					displayDirectoryContents();
+					displayPeopleByRegion(AddressBook.personByCity);
 					break;
 				case 6:
+					displayPeopleByRegion(AddressBook.personByState);
+					break;
+				case 7:
+					displayDirectoryContents();
+					break;
+				case 8:
 					moreChanges = false;
 					System.out.println("Exiting Address Book Directory !");
 				}
@@ -101,6 +107,18 @@ import java.util.stream.Stream;
 					.filter(person -> person.getFirstName().equals(personName) && person.getState().equals(stateName))
 					.forEach(person -> System.out.println(person));		
 			} 
+
+		}
+		
+		public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
+			ArrayList<ContactPerson> list;
+			for (String name : listToDisplay.keySet()) {
+				System.out.println("People residing in: " + name);
+				list = listToDisplay.get(name);
+				for (ContactPerson contact : list) {
+					System.out.println(contact);
+				}
+			}
 
 		}
 

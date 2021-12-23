@@ -8,16 +8,17 @@ import java.util.Scanner;
 public class AddressBook implements AddressBookIF {
 
 	Scanner scannerObject = new Scanner(System.in);
-	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
-	public static String addressBookName;
-	boolean isPresent = false;
+	public Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
+	public static HashMap<String, ArrayList<ContactPerson>> personByState = new HashMap<String, ArrayList<ContactPerson>>();
+	public String addressBookName;
 	
 	public String getAddressBookName() {
 		return addressBookName;
 	}
 
-	public static void setAddressBookName(String addressBookName) {
-		AddressBook.addressBookName = addressBookName;
+	public void setAddressBookName(String addressBookName) {
+		this.addressBookName = addressBookName;
 	}
 	
 	public ArrayList<ContactPerson> getContact() {
@@ -60,19 +61,14 @@ public class AddressBook implements AddressBookIF {
 	public void addContact() {
 
 		ContactPerson person = new ContactPerson();
-		
+
 		System.out.println("Enter First Name: ");
 		String firstName = scannerObject.next();
 		
-		contactList.entrySet().stream().forEach(entry -> {
-			if(entry.getKey().equals(firstName.toLowerCase())) {
-				System.out.println("Contact Already Exists");
-				isPresent = true;
-				return;
-			}
-		});
-		
-		if(isPresent == false) {
+		if(contactList.containsKey(firstName)) {
+			System.out.println("Contact Already Exists");
+			return;
+		} 
 			
 			System.out.println("Enter Last Name: ");
 			String lastName = scannerObject.next();
@@ -99,8 +95,34 @@ public class AddressBook implements AddressBookIF {
 			person.setCity(city);
 			person.setState(state);
 			person.setZip(zipCode);
+			addPersonToCity(person);
+			addPersonToState(person);
+			contactList.put(firstName, person);
 			
-			contactList.put(firstName.toLowerCase(), person);
+			contactList.put(firstName, person);
+		}
+
+	
+
+	public void addPersonToCity(ContactPerson contact) {
+		if (personByCity.containsKey(contact.getCity())) {
+			personByCity.get(contact.getCity()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> cityList = new ArrayList<ContactPerson>();
+			cityList.add(contact);
+			personByCity.put(contact.getCity(), cityList);
+		}
+	}
+
+	public void addPersonToState(ContactPerson contact) {
+		if (personByState.containsKey(contact.getState())) {			
+			personByState.get(contact.getState()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> stateList = new ArrayList<ContactPerson>();
+			stateList.add(contact);
+			personByState.put(contact.getState(), stateList);
 		}
 	}
 
