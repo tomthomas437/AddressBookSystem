@@ -1,5 +1,6 @@
 package com.addressBook;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,6 +18,10 @@ public class AddressBook implements AddressBookIF {
 
 	public static void setAddressBookName(String addressBookName) {
 		AddressBook.addressBookName = addressBookName;
+	}
+	
+	public ArrayList<ContactPerson> getContact() {
+		return new ArrayList<ContactPerson>(contactList.values());
 	}
 
 	@Override
