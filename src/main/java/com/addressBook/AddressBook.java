@@ -2,8 +2,11 @@ package com.addressBook;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBook implements AddressBookIF {
 
@@ -33,7 +36,7 @@ public class AddressBook implements AddressBookIF {
 
 			System.out.println("\nChoose the operation you want to perform");
 			System.out.println(
-					"1.Add Contact to Address Book\n2.Edit Existing contact\n3.Display contact book\n4.Delete Contact\n5.Exit to Main Menu");
+					"1.Add Contact to Address Book\n2.Edit Existing contact\n3.Display contact book\n4.Delete Contact\n5.Display Sorted Address Book\n6.Exit Address book System");
 
 			switch (scannerObject.nextInt()) {
 			case 1:
@@ -48,7 +51,10 @@ public class AddressBook implements AddressBookIF {
 			case 4:
 				deletePerson();
 				break;
-			case 5:
+			case 5 :
+				sortAddressBook();
+				break;
+			case 6:
 				moreChanges = false;
 				System.out.println("Exiting Address Book: "+this.getAddressBookName()+" !");
 
@@ -193,6 +199,21 @@ public class AddressBook implements AddressBookIF {
 			System.out.println("Contact Not Found!");
 		}
 		
+	}
+	
+public void sortAddressBook() {
+		
+		List<ContactPerson> sortedContactList = contactList.values().stream()
+				.sorted((firstperson, secondperson) -> firstperson.getFirstName().compareTo(secondperson.getFirstName()))
+				.collect(Collectors.toList());
+		
+		System.out.println("------ Sorted Address Book "+this.getAddressBookName()+" ------");
+		Iterator iterator = sortedContactList.iterator();
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
+			System.out.println();
+		}
+		System.out.println("-----------------------------------------");
 	}
 
 	@Override
