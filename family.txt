@@ -1,0 +1,2 @@
+ContactPerson [firstName=eric, lastName=liju, email=eric@gmail.com, city=kayankulam, state=kerala, phoneNumber=3923913331, zip=613911]
+ContactPerson [firstName=Binson, lastName=Abraham, email=binson@gmail.com, city=Vadodra, state=Gujrat, phoneNumber=5381791421, zip=348938]
